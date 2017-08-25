@@ -1,0 +1,29 @@
+{
+  "name": "quote-sta-gram",
+  "version": "1.0.0",
+  "description": "Just like Instagram, but with quotes",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon",
+    "debug": "nodemon --inspect"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.generalassemb.ly:wdi-nyc-dresselhaus/quote-sta-gram.git"
+  },
+  "keywords": [],
+  "author": "Jason Seminara <js@ga.co>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-plugin-import": "^2.7.0",
+    "nodemon": "^1.11.0"
+  }
+}
