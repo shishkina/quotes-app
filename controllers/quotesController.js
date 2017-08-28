@@ -3,6 +3,7 @@
  * @author Jason Seminara <js@ga.co>
  */
 
+const quoteDB = require('../models/quoteDB');
 
 /**
  * Create a QuoteController
@@ -19,8 +20,19 @@ module.exports = {
     // TODO: make this method
   },
 
+
+  /**
+   * Middleware function:
+   * Get all the quotes and set them in res.locals
+   * @param {req} req - Node's Request Object
+   * @param {res} res - Node's Response Object
+   * @param {next} next - The next middleware function in our route
+   * @return {undefined}
+   */
   index(req, res) {
-    res.send('This is a listing of quotes');
+    quoteDB.findAll()
+      .then(quotes => res.json({ quotes }))
+      .catch(err => console.log(err));
   },
 
   /**
@@ -32,7 +44,9 @@ module.exports = {
    * @return {undefined}
    */
   getOne(req, res) {
-    res.send(`This is quote #${req.params.id}`);
+    quoteDB.findById(req.params.id)
+      .then(quote => res.json({ quote }))
+      .catch(err => console.log(err));
   },
 
   /**
@@ -71,7 +85,9 @@ module.exports = {
    * @return {undefined}
    */
   destroy(req, res) {
-    res.send(`I’ll delete quote #${req.params.id} with the data you give me`);
+    quoteDB.findById(req.params.id)
+      .then(quote => res.json({ quote }))
+      .catch(err => console.log(err));
   },
 
 
