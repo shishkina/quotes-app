@@ -3,7 +3,6 @@
  * @author Jason Seminara <js@ga.co>
  */
 
-// TODO: [1] import the quoteDB module
 
 /**
  * Create a QuoteController
@@ -20,16 +19,8 @@ module.exports = {
     // TODO: make this method
   },
 
-  /**
-   * Middleware function:
-   * Get all the quotes and set them in res.locals
-   * @param {req} req - Node's Request Object
-   * @param {res} res - Node's Response Object
-   * @param {next} next - The next middleware function in our route
-   * @return {undefined}
-   */
   index(req, res) {
-    // TODO: make this method
+    res.send('This is a listing of quotes');
   },
 
   /**
@@ -40,8 +31,8 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  getOne: (req, res) => {
-    // TODO: make this method
+  getOne(req, res) {
+    res.send(`This is quote #${req.params.id}`);
   },
 
   /**
@@ -53,8 +44,8 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  create: (req, res) => {
-    // TODO: make this method
+  create(req, res) {
+    res.send('I’m accepting quote POST data');
   },
 
   /**
@@ -67,8 +58,8 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  update: (req, res) => {
-    // TODO: make this method
+  update(req, res) {
+    res.send(`I’ll replace quote #${req.params.id} with the data you give me`);
   },
 
   /**
@@ -79,8 +70,8 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  destroy: (req, res) => {
-    // TODO: make this method
+  destroy(req, res) {
+    res.send(`I’ll delete quote #${req.params.id} with the data you give me`);
   },
 
 
@@ -93,7 +84,7 @@ module.exports = {
    * @return {undefined}
    */
   showNewForm: (req, res) => {
-    // TODO: make this method
+    res.send('I’m the HTML form for new quotes. I post to /quotes');
   },
 
   /**
@@ -105,7 +96,7 @@ module.exports = {
    * @return {undefined}
    */
   showEditForm: (req, res) => {
-    // TODO: make this method
+    res.send(`I’m the HTML form for editing quote #${req.params.id}. I post data to /quotes`);
   },
 
 };

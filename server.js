@@ -1,6 +1,9 @@
 // Required resources always go first
 // TODO: [1] bring in the express library
 const express = require('express');
+const logger  = require('morgan');
+
+const quotesRouter = require('./routes/quotes');
 
 // TODO: [2] create a PORT variable that checks the process.env or defaults to 3000
 const PORT = process.env.PORT || 3000;
@@ -9,8 +12,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // TODO: [8] set up logging
+app.use(logger('dev'));
+
 
 /* ROUTES */
+app.use('/quotes', quotesRouter);
 
 // TODO: [4] Create a GET request handler for '/' (home).
 // send '<h1>Hello World!</h1>' to the user
