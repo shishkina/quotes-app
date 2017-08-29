@@ -16,8 +16,13 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  createNewQuote(req, res) {
-    // TODO: make this method
+  makeBlankQuote(req, res) {
+    res.json({
+      id:         null,
+      content:    null,
+      author:     null,
+      genre_type: null,
+    });
   },
 
 
@@ -32,7 +37,7 @@ module.exports = {
   index(req, res) {
     quoteDB.findAll()
       .then(quotes => res.json({ quotes }))
-      .catch(err => console.log(err));
+      .catch(err => res.status(400).json(err));
   },
 
   /**
@@ -46,7 +51,7 @@ module.exports = {
   getOne(req, res) {
     quoteDB.findById(req.params.id)
       .then(quote => res.json({ quote }))
-      .catch(err => console.log(err));
+      .catch(err => res.status(404).json(err));
   },
 
   /**
@@ -59,7 +64,9 @@ module.exports = {
    * @return {undefined}
    */
   create(req, res) {
-    res.send('I’m accepting quote POST data');
+    quoteDB.save(req.body)
+      .then(quote => res.json({ quote }))
+      .catch(err => res.status(401).json(err));
   },
 
   /**
@@ -73,7 +80,9 @@ module.exports = {
    * @return {undefined}
    */
   update(req, res) {
-    res.send(`I’ll replace quote #${req.params.id} with the data you give me`);
+    quoteDB.update(req.body)
+      .then(quote => res.json({ quote }))
+      .catch(err => res.status(401).json(err));
   },
 
   /**
@@ -85,9 +94,9 @@ module.exports = {
    * @return {undefined}
    */
   destroy(req, res) {
-    quoteDB.findById(req.params.id)
-      .then(quote => res.json({ quote }))
-      .catch(err => console.log(err));
+    quoteDB.destroy(req.params.id)
+      .then(() => res.json({ message: 'successful' }))
+      .catch(err => res.status(404).json(err));
   },
 
 
@@ -99,20 +108,9 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  showNewForm: (req, res) => {
-    res.send('I’m the HTML form for new quotes. I post to /quotes');
+  showQuoteForm: (req, res) => {
+    res.json({message: 'I’m the HTML form for new quotes. I post to /quotes'});
   },
 
-  /**
-   * @func showEditForm
-   * @desc Show a pre-filled HTML form
-   * @param {req} req - Node's Request Object
-   * @param {res} res - Node's Response Object
-   * @param {next} next - The next middleware function in our route
-   * @return {undefined}
-   */
-  showEditForm: (req, res) => {
-    res.send(`I’m the HTML form for editing quote #${req.params.id}. I post data to /quotes`);
-  },
 
 };

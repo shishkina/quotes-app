@@ -47,7 +47,25 @@ module.exports = {
   },
 
   save(quote) {
-    // TODO: use pgpromise to SAVE ONE row, producing a new id
+    return db.one(`
+      INSERT INTO quotes
+      ('content', 'author', 'genre_type')
+      VALUES
+      ($/content/, $/author/, $/genre_type/)
+      RETURNING *
+    `, quote);
+  },
+
+  update(quote) {
+    return db.one(`
+      UPDATE quotes
+      SET
+      content = $/content/,
+      author = $/author/,
+      genre_type = $/genre_type/
+      WHERE id = $/id/
+      RETURNING *
+    `, quote);
   },
 
   /**

@@ -1,26 +1,26 @@
 // TODO: [1] bring in express
-const express          = require('express');
-const quotesController = require('../controllers/quotesController');
+const express = require('express');
+const controller = require('../controllers/quotesController');
 
 // TODO: [2] invoke the Router()
 const quotesRouter = express.Router();
 
 
 // TODO: [3] list your routes in order of most specific to most general
-quotesRouter.route('/new')
-  .get(quotesController.showNewForm);
+quotesRouter.get('/:id/edit', controller.getOne);
 
-quotesRouter.route('/:id/edit')
-  .get(quotesController.showEditForm);
+quotesRouter.get('/new', controller.makeBlankQuote);
 
 quotesRouter.route('/:id')
-  .get(quotesController.getOne)
-  .put(quotesController.update)
-  .delete(quotesController.destroy);
+  .get(controller.getOne)
+  .put(controller.update)
+  .delete(controller.destroy);
+
 
 quotesRouter.route('/')
-  .get(quotesController.index)
-  .post(quotesController.create);
+  .get(controller.index)
+  .post(controller.create);
+
 
 // TODO: [4] export the quotesRouter
 module.exports = quotesRouter;
