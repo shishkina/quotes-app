@@ -34,10 +34,13 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  index(req, res) {
+  index(req, res, next) {
     quoteDB.findAll()
-      .then(quotes => res.json({ quotes }))
-      .catch(err => res.status(400).json(err));
+      .then((quotes) => {
+        res.locals.quotes = quotes;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -48,10 +51,13 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  getOne(req, res) {
+  getOne(req, res, next) {
     quoteDB.findById(req.params.id)
-      .then(quote => res.json({ quote }))
-      .catch(err => res.status(404).json(err));
+      .then((quote) => {
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -63,10 +69,13 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  create(req, res) {
+  create(req, res, next) {
     quoteDB.save(req.body)
-      .then(quote => res.json({ quote }))
-      .catch(err => res.status(401).json(err));
+      .then((quote) => {
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -79,10 +88,13 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  update(req, res) {
+  update(req, res, next) {
     quoteDB.update(req.body)
-      .then(quote => res.json({ quote }))
-      .catch(err => res.status(401).json(err));
+      .then((quote) => {
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -93,10 +105,10 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  destroy(req, res) {
+  destroy(req, res, next) {
     quoteDB.destroy(req.params.id)
-      .then(() => res.json({ message: 'successful' }))
-      .catch(err => res.status(404).json(err));
+      .then(() => next())
+      .catch(err => next(err));
   },
 
 

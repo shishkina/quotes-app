@@ -47,9 +47,10 @@ module.exports = {
   },
 
   save(quote) {
+    console.log(quote);
     return db.one(`
       INSERT INTO quotes
-      ('content', 'author', 'genre_type')
+      (content, author, genre_type)
       VALUES
       ($/content/, $/author/, $/genre_type/)
       RETURNING *

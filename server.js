@@ -1,7 +1,8 @@
 // Required resources always go first
 // TODO: [1] bring in the express library
-const express = require('express');
-const logger  = require('morgan');
+const express    = require('express');
+const logger     = require('morgan');
+const bodyParser = require('body-parser');
 
 const quotesRouter = require('./routes/quotes');
 
@@ -13,7 +14,8 @@ const app = express();
 
 // TODO: [8] set up logging
 app.use(logger('dev'));
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /* ROUTES */
 app.use('/quotes', quotesRouter);
@@ -22,6 +24,9 @@ app.use('/quotes', quotesRouter);
 // send '<h1>Hello World!</h1>' to the user
 app.get('/', (req, res) => res.send('<h1>Hello World!</h1>'));
 
+app.post('/test', (req, res) => {
+  res.json(req.body);
+});
 
 // WE HAVE LIFT OFF!!
 // TODO: [5] Set up a listener on PORT
