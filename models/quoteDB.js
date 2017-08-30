@@ -7,7 +7,7 @@
 
 // TODO: [1] require pg-promise, and execute it like a function.
 // TODO: [2] require our DB config
-const pgp      = require('pg-promise')();
+const pgp = require('pg-promise')();
 const dbConfig = require('../config/dbConfig');
 
 
@@ -58,6 +58,7 @@ module.exports = {
   },
 
   update(quote) {
+    console.log(quote);
     return db.one(`
       UPDATE quotes
       SET

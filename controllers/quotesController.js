@@ -54,6 +54,7 @@ module.exports = {
   getOne(req, res, next) {
     quoteDB.findById(req.params.id)
       .then((quote) => {
+        // let obj = {...quote, "id": req.params.id}
         res.locals.quote = quote;
         next();
       })
@@ -89,6 +90,7 @@ module.exports = {
    * @return {undefined}
    */
   update(req, res, next) {
+    console.log(req.body, 'update controller');
     quoteDB.update(req.body)
       .then((quote) => {
         res.locals.quote = quote;
@@ -121,7 +123,9 @@ module.exports = {
    * @return {undefined}
    */
   showQuoteForm: (req, res) => {
-    res.json({message: 'I’m the HTML form for new quotes. I post to /quotes'});
+    res.json({
+      message: 'I’m the HTML form for new quotes. I post to /quotes',
+    });
   },
 
 

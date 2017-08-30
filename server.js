@@ -1,7 +1,9 @@
 // Required resources always go first
 // TODO: [1] bring in the express library
-const express    = require('express');
-const logger     = require('morgan');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 
 const quotesRouter = require('./routes/quotes');
@@ -14,15 +16,28 @@ const app = express();
 
 // TODO: [8] set up logging
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false,
+}));
 app.use(bodyParser.json());
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(methodOverride('_method'));
 
 /* ROUTES */
 app.use('/quotes', quotesRouter);
 
 // TODO: [4] Create a GET request handler for '/' (home).
 // send '<h1>Hello World!</h1>' to the user
-app.get('/', (req, res) => res.send('<h1>Hello World!</h1>'));
+app.get('/', (req, res) => {
+  res.render('index', {
+    message:      'hello you!',
+    subTitle:     'welcome to quotes!',
+    quoteAuthors: ['Yoda', 'Unknown'],
+  });
+});
 
 app.post('/test', (req, res) => {
   res.json(req.body);

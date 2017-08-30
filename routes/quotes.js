@@ -9,9 +9,9 @@ const quotesRouter = express.Router();
 
 
 // TODO: [3] list your routes in order of most specific to most general
-quotesRouter.get('/:id/edit', controller.getOne, );
+quotesRouter.get('/:id/edit', controller.getOne, views.showEditForm, views.show404);
 
-quotesRouter.get('/new', controller.makeBlankQuote);
+quotesRouter.get('/new', views.showAddForm);
 
 quotesRouter.route('/:id')
   .get(controller.getOne, views.showOne, views.show404)
