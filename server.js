@@ -14,6 +14,9 @@ const PORT = process.env.PORT || 3000;
 // TODO: [3] Start up express
 const app = express();
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 // TODO: [8] set up logging
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
@@ -31,6 +34,7 @@ app.use('/quotes', quotesRouter);
 
 // TODO: [4] Create a GET request handler for '/' (home).
 // send '<h1>Hello World!</h1>' to the user
+
 app.get('/', (req, res) => {
   res.render('index', {
     message:      'hello you!',
@@ -38,11 +42,6 @@ app.get('/', (req, res) => {
     quoteAuthors: ['Yoda', 'Unknown'],
   });
 });
-
-app.post('/test', (req, res) => {
-  res.json(req.body);
-});
-
 // WE HAVE LIFT OFF!!
 // TODO: [5] Set up a listener on PORT
 // TODO: [6] Log the message "Server up and listening on port XXXX"
