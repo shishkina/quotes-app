@@ -5,8 +5,6 @@
  * Each function returns a promise
  */
 
-// TODO: [1] require pg-promise, and execute it like a function.
-// TODO: [2] require our DB config
 const pgp = require('pg-promise')();
 const dbConfig = require('../config/dbConfig');
 
@@ -26,8 +24,9 @@ module.exports = {
    */
   findAll() {
     return db.many(`
-      SELECT *
-        FROM quotes
+      SELECT quotes.id, content, author, genre_id
+        FROM quotes INNER JOIN genres
+        ON quotes.genre_id = genres.id
     ORDER BY id
     `);
   },
@@ -40,31 +39,47 @@ module.exports = {
    */
   findById(id) {
     return db.one(`
-      SELECT *
-        FROM quotes
-       WHERE id = $1
+      SELECT quotes.id, content, author, genres.genre
+        FROM quotes INNER JOIN genres
+        ON quotes.genre_id = genres.id
+      WHERE quotes.id = $1;
     `, id);
   },
 
+  /**
+   * @func save
+   * @param quote {object} quote record to be saved in the db
+   * @desc will create a new record of the new quote in the database
+   * @returns {Promise}
+   */
   save(quote) {
     console.log(quote);
+    // the quote_id comes from the form as a string
+    // cast it to a number
+    quote.genre_id = Number.parseInt(quote.genre_id, 10);
     return db.one(`
       INSERT INTO quotes
-      (content, author, genre_type)
+      (content, author, genre_id)
+
       VALUES
-      ($/content/, $/author/, $/genre_type/)
+      ($/content/, $/author/, $/genre_id/)
       RETURNING *
     `, quote);
   },
+  /**
+   * @func update
+   * @param quote {object} quote record to be updated
+   * @desc will update the record in the databse with the new data
+   * @returns {Promise}
+   */
 
   update(quote) {
-    console.log(quote);
     return db.one(`
       UPDATE quotes
       SET
       content = $/content/,
       author = $/author/,
-      genre_type = $/genre_type/
+      genre_id = $/genre_id/
       WHERE id = $/id/
       RETURNING *
     `, quote);

@@ -16,13 +16,15 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  makeBlankQuote(req, res) {
-    res.json({
+  makeBlankQuote(req, res, next) {
+    const blankQuote = {
       id:         null,
       content:    null,
       author:     null,
       genre_type: null,
-    });
+    };
+    res.locals.quote = blankQuote;
+    next();
   },
 
 
@@ -54,6 +56,7 @@ module.exports = {
   getOne(req, res, next) {
     quoteDB.findById(req.params.id)
       .then((quote) => {
+        console.log(quote);
         // let obj = {...quote, "id": req.params.id}
         res.locals.quote = quote;
         next();
