@@ -20,7 +20,6 @@ module.exports = {
     res.render('quotes/quote-add');
   },
   showEditForm(req, res) {
-    // console.log(res.locals.quote);
     res.render('quotes/quote-edit', {
       data: res.locals.quote,
     });
@@ -29,7 +28,6 @@ module.exports = {
     res.redirect('/quotes');
   },
   handleUpdate(req, res) {
-    /* need ot update the body so it has an ID */
     res.redirect(`/quotes/${req.params.id}`);
   },
   handleDelete(req, res) {

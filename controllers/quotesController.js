@@ -4,13 +4,12 @@
  */
 
 const quoteDB = require('../models/quoteDB');
-
 /**
  * Create a QuoteController
  */
 module.exports = {
   /**
-   * Create a blank Quote and set it in res.locals
+   * Create a blank Quote and set it in res.locals to render in /new route
    * @param {req} req - Node's Request Object
    * @param {res} res - Node's Response Object
    * @param {next} next - The next middleware function in our route
@@ -18,10 +17,9 @@ module.exports = {
    */
   makeBlankQuote(req, res, next) {
     const blankQuote = {
-      id:         null,
-      content:    null,
-      author:     null,
-      genre_type: null,
+      id:      null,
+      content: null,
+      author:  null,
     };
     res.locals.quote = blankQuote;
     next();
@@ -46,7 +44,7 @@ module.exports = {
   },
 
   /**
-   * Read One Middleware:
+   * GetOne Middleware:
    * Get a quote from the DB and set it in res.locals
    * @param {req} req - Node's Request Object
    * @param {res} res - Node's Response Object
@@ -74,6 +72,7 @@ module.exports = {
    * @return {undefined}
    */
   create(req, res, next) {
+    console.log(req.body, 'body');
     quoteDB.save(req.body)
       .then((quote) => {
         res.locals.quote = quote;
@@ -115,21 +114,4 @@ module.exports = {
       .then(() => next())
       .catch(err => next(err));
   },
-
-
-  /**
-   * @func showNewForm
-   * @desc Show a blank HTML form
-   * @param {req} req - Node's Request Object
-   * @param {res} res - Node's Response Object
-   * @param {next} next - The next middleware function in our route
-   * @return {undefined}
-   */
-  showQuoteForm: (req, res) => {
-    res.json({
-      message: 'I’m the HTML form for new quotes. I post to /quotes',
-    });
-  },
-
-
 };
