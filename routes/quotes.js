@@ -1,12 +1,22 @@
-// TODO: [1] bring in express
+const express = require('express');
 
-// TODO: [2] invoke the Router()
+const quotesController = require('../controllers/quotesController');
+const genresController = require('../controllers/genresController');
 
+const views = require('../controllers/viewController');
 
-// TODO: [3] list your routes in order of most specific to most general
+const quotesRouter = express.Router();
 
+quotesRouter.get('/:id/edit', genresController.index, quotesController.getOne, views.showEditForm, views.show404);
+quotesRouter.get('/new', genresController.index, quotesController.makeBlankQuote, views.showAddForm, views.show404);
 
-// TODO: [4] export the quotesRouter
+quotesRouter.route('/:id')
+  .get(quotesController.getOne, views.showOne, views.show404)
+  .put(quotesController.update, views.handleUpdate, views.show406)
+  .delete(quotesController.destroy, views.handleDelete, views.show404);
 
-// TODO: [5] Require this file in server.js
-// TODO: [6] Remember to mount this new router at '/quotes' in server.js
+quotesRouter.route('/')
+  .get(quotesController.index, views.showQuotes, views.show404)
+  .post(quotesController.create, views.handleCreate, views.show406);
+
+module.exports = quotesRouter;

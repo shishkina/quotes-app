@@ -5,16 +5,15 @@
  * Each function returns a promise
  */
 
-// TODO: [1] require pg-promise, and execute it like a function.
-// TODO: [2] require our DB config
-
+const pgp = require('pg-promise')();
+const dbConfig = require('../config/dbConfig');
 
 // execute pgp with our db config, so a connection is made.
 const db = pgp(dbConfig);
 
 // @see https://github.com/vitaly-t/pg-promise#query-result-mask
 
-// export our collection of functions
+// export a collection of functions
 module.exports = {
   /**
    * @func findAll
@@ -23,29 +22,65 @@ module.exports = {
    * @hint this
    */
   findAll() {
-    // TODO: use pgpromise to get all rows
+    return db.many(`
+      SELECT *
+        FROM quotes
+      ORDER BY id
+    `);
   },
-
   /**
    * @func findById
-   * @param id {number} - the ID of the quote to search for
+   * @param id {number} the ID of the quote to search for
    * @desc search through the quotes and find by an ID
    * @returns {Promise}
    */
   findById(id) {
-    // TODO: use pgpromise to get ONE rows, filtered by id
+    return db.one(`
+      SELECT *
+        FROM quotes
+        WHERE id = $1
+    `, id);
   },
-
+  /**
+   * @func save
+   * @param quote {object} quote record to be saved in the db
+   * @desc will create a new record of the new quote in the database
+   * @returns {Promise}
+   */
   save(quote) {
-    // TODO: use pgpromise to SAVE ONE row, producing a new id
+    return db.one(`
+      INSERT INTO quotes (author, content, genre_id)
+      VALUES ($/author/, $/content/, $/genre_id/)
+      RETURNING *
+      `, quote);
   },
-
+  /**
+   * @func update
+   * @param quote {object} quote record to be updated
+   * @desc will update the record in the databse with the new data
+   * @returns {Promise}
+   */
+  update(quote) {
+    return db.one(`
+      UPDATE quotes
+      SET
+      content = $/content/,
+      author = $/author/,
+      genre_id = $/genre_id/
+      WHERE id = $/id/
+      RETURNING *
+      `, quote);
+  },
   /**
    * Removes one quote from DB
    * @param {number} id - the id of a quote
    * @returns {Promise}
    */
   destroy(id) {
-    // TODO: use pgpromise to DELETE ONE row, producing nothing
+    return db.none(`
+      DELETE
+        FROM quotes
+       WHERE id = $1
+    `, id);
   },
 };

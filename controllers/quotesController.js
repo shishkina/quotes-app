@@ -3,22 +3,28 @@
  * @author Jason Seminara <js@ga.co>
  */
 
-// TODO: [1] import the quoteDB module
-
+const quoteDB = require('../models/quoteDB');
 /**
  * Create a QuoteController
  */
 module.exports = {
   /**
-   * Create a blank Quote and set it in res.locals
+   * Create a blank Quote and set it in res.locals to render in /new route
    * @param {req} req - Node's Request Object
    * @param {res} res - Node's Response Object
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  createNewQuote(req, res) {
-    // TODO: make this method
+  makeBlankQuote(req, res, next) {
+    const blankQuote = {
+      id:      null,
+      content: null,
+      author:  null,
+    };
+    res.locals.quote = blankQuote;
+    next();
   },
+
 
   /**
    * Middleware function:
@@ -28,20 +34,32 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  index(req, res) {
-    // TODO: make this method
+  index(req, res, next) {
+    quoteDB.findAll()
+      .then((quotes) => {
+        res.locals.quotes = quotes;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
-   * Read One Middleware:
+   * GetOne Middleware:
    * Get a quote from the DB and set it in res.locals
    * @param {req} req - Node's Request Object
    * @param {res} res - Node's Response Object
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  getOne: (req, res) => {
-    // TODO: make this method
+  getOne(req, res, next) {
+    quoteDB.findById(req.params.id)
+      .then((quote) => {
+        console.log(quote);
+        // let obj = {...quote, "id": req.params.id}
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -53,8 +71,14 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  create: (req, res) => {
-    // TODO: make this method
+  create(req, res, next) {
+    console.log(req.body, 'body');
+    quoteDB.save(req.body)
+      .then((quote) => {
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -67,8 +91,14 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  update: (req, res) => {
-    // TODO: make this method
+  update(req, res, next) {
+    console.log(req.body, 'update controller');
+    quoteDB.update(req.body)
+      .then((quote) => {
+        res.locals.quote = quote;
+        next();
+      })
+      .catch(err => next(err));
   },
 
   /**
@@ -79,33 +109,9 @@ module.exports = {
    * @param {next} next - The next middleware function in our route
    * @return {undefined}
    */
-  destroy: (req, res) => {
-    // TODO: make this method
+  destroy(req, res, next) {
+    quoteDB.destroy(req.params.id)
+      .then(() => next())
+      .catch(err => next(err));
   },
-
-
-  /**
-   * @func showNewForm
-   * @desc Show a blank HTML form
-   * @param {req} req - Node's Request Object
-   * @param {res} res - Node's Response Object
-   * @param {next} next - The next middleware function in our route
-   * @return {undefined}
-   */
-  showNewForm: (req, res) => {
-    // TODO: make this method
-  },
-
-  /**
-   * @func showEditForm
-   * @desc Show a pre-filled HTML form
-   * @param {req} req - Node's Request Object
-   * @param {res} res - Node's Response Object
-   * @param {next} next - The next middleware function in our route
-   * @return {undefined}
-   */
-  showEditForm: (req, res) => {
-    // TODO: make this method
-  },
-
 };
