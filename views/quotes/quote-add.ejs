@@ -1,22 +1,10 @@
 <% include ../partials/boilerplate %>
-
-<form method='POST' action='/quotes'>
-  <input name='content' type='text' placeholder='Quote' />
-  <input name='author' type='text' placeholder='Author' />
-<label for='genre_id'> Genre
-        <select name='genre_id' type='text'>
-          <option value='1'>motivational</option>
-          <option value='2'>comedy</option>
-          <option value='3'>philosophical</option>
-          <option value='4'>education</option>
-          <option value='5'>design</option>
-          <option value='6'>literary</option>
-          <option value='7'>poetry</option>
-          <option value="8">gonzo</option>
-          <option value="9">misc</option>
-        </select>
-      </label></br>
-  <input type='submit' value='Add it!' />
+<form method="POST" action="/quotes">
+  <input name="content" type="text" placeholder="Quote" />
+  <input name="author" type="text" placeholder="Author" />
+  <!-- separate the dropdown into partial to be included dynamically -->
+  <%- include ../partials/genres-dropdown %>
+  <input type="submit" value="Add it!" />
 </form>
 
 <% include ../partials/footer %>

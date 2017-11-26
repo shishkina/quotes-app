@@ -2,6 +2,7 @@
   <% include ../partials/boilerplate %>
 
   <a href="/quotes/new">Add quote</a>
+  
   <% for (let quote of data) { %>
     <div class='quote'>
       <p><%= quote.content %></p>
