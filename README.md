@@ -24,8 +24,3 @@ The application will allow the user to view quotes, sorted by category.
 	1. The data stored must be relational and held in multiple tables, accessed via a SQL join. 
 	1. updates to collections must also save the proper data in the appropriate tables. 
 
-# Code-Along
-1. [Exercise 1](exercises/exercise-01.md): Set-up and Hello World.
-2. [Exercise 2](exercises/exercise-02.md): Routing.
-3. [Exercise 3](exercises/exercise-03.md): Data.
-3. [Exercise 4](exercises/exercise-04.md): Views.
